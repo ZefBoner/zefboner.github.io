@@ -5,7 +5,7 @@ Sitio para publicar writeups de máquinas, Sherlocks, CTFs y laboratorios, hecho
 y alojado gratis en **GitHub Pages**. Fondo oscuro, acento verde, categorías, etiquetas,
 buscador y resaltado de código.
 
-- **URL final:** `https://angxdes.github.io`
+- **URL final:** `https://zefboner.github.io`
 - **Escribes:** archivos Markdown en `_posts/`.
 - **Publicas:** `git push` → GitHub construye y sube el sitio solo.
 
@@ -27,7 +27,7 @@ buscador y resaltado de código.
 3. Conecta esta carpeta con ese repo y haz el primer push. Desde esta carpeta, en PowerShell:
 
    ```bash
-   git remote add origin https://github.com/Angxdes/angxdes.github.io.git
+   git remote add origin https://github.com/ZefBoner/ZefBoner.github.io.git
    git branch -M main
    git push -u origin main
    ```
@@ -36,7 +36,7 @@ buscador y resaltado de código.
 
 4. En GitHub, entra al repo → **Settings** → **Pages** → en **Source** elige
    **GitHub Actions** (no "Deploy from a branch").
-5. Espera 1-2 minutos. Tu sitio queda en `https://angxdes.github.io`.
+5. Espera 1-2 minutos. Tu sitio queda en `https://zefboner.github.io`.
 
 > Si el usuario de GitHub NO es exactamente `Angxdes`, cambia también `url` y `github.username`
 > en [`_config.yml`](_config.yml) y la URL en los scripts.
@@ -160,7 +160,7 @@ Luego abre `http://localhost:4000`. El script usa Ruby/Bundler si lo tienes; si 
 ```
 
 Hace `commit` + `push`. En 1-2 minutos el writeup está en línea. El avance del build se ve en
-`https://github.com/Angxdes/angxdes.github.io/actions`.
+`https://github.com/ZefBoner/ZefBoner.github.io/actions`.
 
 ---
 

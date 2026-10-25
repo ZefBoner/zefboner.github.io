@@ -34,7 +34,7 @@ para buscar por técnica (`kerberoasting`, `ssti`, `suid`, ...).
 
 ## Dónde encontrarme
 
-- GitHub: [Angxdes](https://github.com/Angxdes)
+- GitHub: [ZefBoner](https://github.com/ZefBoner)
 
 <!-- Quita los comentarios y pon tus enlaces reales:
 - HackTheBox: [Angxdes](https://app.hackthebox.com/profile/TU_ID)

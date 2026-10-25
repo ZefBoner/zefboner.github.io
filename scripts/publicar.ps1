@@ -53,8 +53,8 @@ try {
     Write-Host ""
     Write-Host "  Publicado." -ForegroundColor Green
     Write-Host "  GitHub esta construyendo el sitio. En 1-2 minutos estara en linea."
-    Write-Host "  Progreso del build:  https://github.com/Angxdes/angxdes.github.io/actions"
-    Write-Host "  Sitio:               https://angxdes.github.io"
+    Write-Host "  Progreso del build:  https://github.com/ZefBoner/ZefBoner.github.io/actions"
+    Write-Host "  Sitio:               https://zefboner.github.io"
     Write-Host ""
 }
 finally {

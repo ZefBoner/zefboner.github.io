@@ -21,10 +21,10 @@ description: >-
   TryHackMe y laboratorios de seguridad ofensiva y defensiva.
 
 # Protocolo + dominio del sitio, sin "/" al final.
-url: "https://angxdes.github.io"
+url: "https://zefboner.github.io"
 
 github:
-  username: Angxdes
+  username: ZefBoner
 
 twitter:
   username: # tu usuario de X/Twitter, si quieres que aparezca
@@ -36,7 +36,7 @@ social:
   fediverse_handle:
   links:
     # El primer enlace es el del dueño del copyright
-    - https://github.com/Angxdes
+    - https://github.com/ZefBoner
     # - https://app.hackthebox.com/profile/TU_ID
     # - https://www.linkedin.com/in/tu-usuario
 
@@ -99,7 +99,7 @@ comments:
     repo:
     issue_term:
   giscus:
-    repo: # Angxdes/angxdes.github.io
+    repo: # ZefBoner/ZefBoner.github.io
     repo_id:
     category:
     category_id:
