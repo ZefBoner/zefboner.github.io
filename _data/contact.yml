@@ -1,0 +1,26 @@
+# Iconos de contacto en la parte baja de la barra lateral.
+# Iconos de https://fontawesome.com/
+
+- type: github
+  icon: "fab fa-github"
+
+- type: rss
+  icon: "fas fa-rss"
+  noblank: true
+
+# Quita el comentario y completa la url para activar más contactos.
+#
+# - type: hackthebox
+#   icon: "fas fa-cube"
+#   url: "https://app.hackthebox.com/profile/TU_ID"
+#
+# - type: linkedin
+#   icon: "fab fa-linkedin"
+#   url: "https://www.linkedin.com/in/TU_USUARIO"
+#
+# - type: twitter          # requiere twitter.username en _config.yml
+#   icon: "fa-brands fa-x-twitter"
+#
+# - type: email            # requiere social.email en _config.yml
+#   icon: "fas fa-envelope"
+#   noblank: true

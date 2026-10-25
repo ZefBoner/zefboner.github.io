@@ -1,0 +1,49 @@
+{%- comment -%}
+  Tarjeta con los datos del writeup. Lee el bloque `info:` del front matter.
+  Uso dentro del post:  {% include writeup-info.html %}
+  Todos los campos son opcionales: solo se muestran los que llenes.
+{%- endcomment -%}
+
+{%- assign info = page.info -%}
+{%- if info -%}
+  {%- assign diff = info.difficulty | downcase | strip -%}
+  {%- case diff -%}
+    {%- when 'very easy', 'muy fácil', 'muy facil' -%}{%- assign diff_class = 'very-easy' -%}
+    {%- when 'easy', 'fácil', 'facil' -%}{%- assign diff_class = 'easy' -%}
+    {%- when 'medium', 'media', 'medio' -%}{%- assign diff_class = 'medium' -%}
+    {%- when 'hard', 'difícil', 'dificil' -%}{%- assign diff_class = 'hard' -%}
+    {%- when 'insane', 'insana' -%}{%- assign diff_class = 'insane' -%}
+    {%- else -%}{%- assign diff_class = '' -%}
+  {%- endcase -%}
+
+  {%- assign os = info.os | downcase -%}
+  {%- if os contains 'linux' -%}{%- assign os_icon = 'fab fa-linux' -%}
+  {%- elsif os contains 'windows' -%}{%- assign os_icon = 'fab fa-windows' -%}
+  {%- elsif os contains 'bsd' -%}{%- assign os_icon = 'fab fa-freebsd' -%}
+  {%- elsif os contains 'android' -%}{%- assign os_icon = 'fab fa-android' -%}
+  {%- else -%}{%- assign os_icon = 'fas fa-server' -%}
+  {%- endif -%}
+
+<div class="wu-card">
+{%- if info.logo -%}
+{%- capture logo_src -%}{%- include media-url.html src=info.logo subpath=page.media_subpath -%}{%- endcapture -%}
+<div class="wu-card__logo"><img src="{{ logo_src }}" alt="Logo de {{ info.name | default: page.title | xml_escape }}"></div>
+{%- endif -%}
+<div class="wu-card__body">
+<dl class="wu-card__grid">
+{%- if info.platform -%}<div class="wu-card__item"><dt>Plataforma</dt><dd>{{ info.platform }}</dd></div>{%- endif -%}
+{%- if info.event -%}<div class="wu-card__item"><dt>Evento</dt><dd>{{ info.event }}</dd></div>{%- endif -%}
+{%- if info.type -%}<div class="wu-card__item"><dt>Tipo</dt><dd>{{ info.type }}</dd></div>{%- endif -%}
+{%- if info.os -%}<div class="wu-card__item"><dt>Sistema</dt><dd><i class="{{ os_icon }}"></i>{{ info.os }}</dd></div>{%- endif -%}
+{%- if info.category -%}<div class="wu-card__item"><dt>Categoría</dt><dd>{{ info.category }}</dd></div>{%- endif -%}
+{%- if info.difficulty -%}<div class="wu-card__item"><dt>Dificultad</dt><dd><span class="wu-diff{% if diff_class != '' %} wu-diff--{{ diff_class }}{% endif %}">{{ info.difficulty }}</span></dd></div>{%- endif -%}
+{%- if info.release -%}<div class="wu-card__item"><dt>Lanzamiento</dt><dd>{{ info.release | date: '%d/%m/%Y' }}</dd></div>{%- endif -%}
+{%- if info.retired -%}<div class="wu-card__item"><dt>Retiro</dt><dd>{{ info.retired | date: '%d/%m/%Y' }}</dd></div>{%- endif -%}
+{%- if info.creators -%}<div class="wu-card__item"><dt>Creador</dt><dd>{{ info.creators }}</dd></div>{%- endif -%}
+</dl>
+{%- if info.link -%}
+<a class="wu-card__link" href="{{ info.link }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-arrow-up-right-from-square fa-fw"></i> Ver en {{ info.platform | default: 'la plataforma' }}</a>
+{%- endif -%}
+</div>
+</div>
+{%- endif -%}
