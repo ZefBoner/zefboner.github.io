@@ -13,15 +13,15 @@ buscador y resaltado de código.
 
 ## 1. Subirlo a GitHub (solo la primera vez)
 
-1. Crea una cuenta en [github.com](https://github.com) con el usuario **Angxdes** (si aún no la tienes).
+1. Entra a GitHub con tu usuario **ZefBoner**.
 2. Crea un repositorio **público** llamado exactamente:
 
    ```text
-   angxdes.github.io
+   ZefBoner.github.io
    ```
 
-   > El nombre tiene que coincidir con tu usuario. Si tu usuario fuera otro, el repo sería
-   > `<tu-usuario>.github.io` y la URL `https://<tu-usuario>.github.io`.
+   > El nombre del repo tiene que coincidir con tu usuario de GitHub para que sea tu sitio
+   > principal: `<tu-usuario>.github.io`, servido en `https://<tu-usuario>.github.io`.
    {: .prompt-tip }
 
 3. Conecta esta carpeta con ese repo y haz el primer push. Desde esta carpeta, en PowerShell:
