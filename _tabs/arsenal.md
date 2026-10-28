@@ -4,11 +4,12 @@ icon: fas fa-toolbox
 order: 4
 ---
 
-Base de datos de comandos y técnicas que uso, con su fase y el writeup donde los apliqué.
-Busca por texto o filtra por fase. Se alimenta de
+Base de datos de comandos y técnicas que uso: su fase, para qué sirven y **en qué lab y sección**
+los apliqué. Busca por comando, etiqueta o lab (por ejemplo `shadowbait` o `tarea 8`), o filtra
+por fase. Se alimenta de
 [`_data/arsenal.yml`](https://github.com/ZefBoner/zefboner.github.io/blob/main/_data/arsenal.yml){:target="_blank"}.
 
-<input type="text" id="arsenal-search" class="arsenal-search" placeholder="Buscar comando, técnica o etiqueta..." autocomplete="off" aria-label="Buscar en el arsenal">
+<input type="text" id="arsenal-search" class="arsenal-search" placeholder="Buscar comando, etiqueta o lab..." autocomplete="off" aria-label="Buscar en el arsenal">
 
 <div class="arsenal-filters" id="arsenal-filters">
   <button type="button" data-fase="" class="active">Todas</button>
@@ -20,22 +21,31 @@ Busca por texto o filtra por fase. Se alimenta de
 
 <p class="arsenal-count" id="arsenal-count"></p>
 
-<div class="arsenal-wrap">
-<table class="arsenal-table">
-  <thead>
-    <tr><th>Comando / técnica</th><th>Fase</th><th>Descripción</th><th>Usado en</th></tr>
-  </thead>
-  <tbody>
+<div class="arsenal-list" id="arsenal-list">
   {%- for e in site.data.arsenal -%}
-    <tr data-fase="{{ e.fase | escape }}" data-search="{{ e.cmd | downcase | escape }} {{ e.desc | downcase | escape }} {{ e.tags | join: ' ' | downcase | escape }} {{ e.fase | downcase | escape }}">
-      <td><code>{{ e.cmd | escape }}</code></td>
-      <td><span class="arsenal-fase">{{ e.fase }}</span></td>
-      <td>{{ e.desc }}{%- if e.tags and e.tags.size > 0 -%}<div class="arsenal-tags">{%- for t in e.tags -%}<span>#{{ t }}</span>{%- endfor -%}</div>{%- endif -%}</td>
-      <td>{%- if e.refs and e.refs.size > 0 -%}{%- for r in e.refs -%}<div class="arsenal-ref"><a href="{{ r.url }}">{{ r.nombre }}</a>{%- if r.seccion -%}<span class="arsenal-seccion">{{ r.seccion }}</span>{%- endif -%}</div>{%- endfor -%}{%- else -%}<span class="arsenal-muted">—</span>{%- endif -%}</td>
-    </tr>
+  <div class="arsenal-item" data-fase="{{ e.fase | escape }}" data-search="{{ e.cmd | downcase | escape }} {{ e.desc | downcase | escape }} {{ e.tags | join: ' ' | downcase | escape }} {{ e.fase | downcase | escape }} {{ e.refs | map: 'nombre' | join: ' ' | downcase | escape }} {{ e.refs | map: 'seccion' | join: ' ' | downcase | escape }}">
+    <div class="arsenal-item__head">
+      <span class="arsenal-fase">{{ e.fase }}</span>
+      <div class="arsenal-item__refs">
+        {%- if e.refs and e.refs.size > 0 -%}
+        {%- for r in e.refs -%}
+        <a class="arsenal-ref" href="{{ r.url }}"><span class="arsenal-ref__lab">{{ r.nombre }}</span>{%- if r.seccion -%}<span class="arsenal-ref__sec">{{ r.seccion }}</span>{%- endif -%}</a>
+        {%- endfor -%}
+        {%- else -%}
+        <span class="arsenal-muted arsenal-ref--none">Sin writeup aún</span>
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="arsenal-item__cmd">
+      <code>{{ e.cmd | escape }}</code>
+      <button type="button" class="arsenal-copy" aria-label="Copiar comando" title="Copiar"><i class="far fa-clipboard"></i></button>
+    </div>
+    <p class="arsenal-item__desc">{{ e.desc | escape }}</p>
+    {%- if e.tags and e.tags.size > 0 -%}
+    <div class="arsenal-tags">{%- for t in e.tags -%}<span>#{{ t | escape }}</span>{%- endfor -%}</div>
+    {%- endif -%}
+  </div>
   {%- endfor -%}
-  </tbody>
-</table>
 </div>
 
 <p class="arsenal-empty" id="arsenal-empty" hidden>Sin resultados. Prueba otra búsqueda o fase.</p>
@@ -44,7 +54,7 @@ Busca por texto o filtra por fase. Se alimenta de
 (function () {
   var search = document.getElementById('arsenal-search');
   var buttons = Array.prototype.slice.call(document.querySelectorAll('#arsenal-filters button'));
-  var rows = Array.prototype.slice.call(document.querySelectorAll('.arsenal-table tbody tr'));
+  var items = Array.prototype.slice.call(document.querySelectorAll('#arsenal-list .arsenal-item'));
   var count = document.getElementById('arsenal-count');
   var empty = document.getElementById('arsenal-empty');
   var activeFase = '';
@@ -52,14 +62,14 @@ Busca por texto o filtra por fase. Se alimenta de
   function apply() {
     var q = (search.value || '').trim().toLowerCase();
     var shown = 0;
-    rows.forEach(function (r) {
-      var okFase = !activeFase || r.getAttribute('data-fase') === activeFase;
-      var okText = !q || r.getAttribute('data-search').indexOf(q) !== -1;
+    items.forEach(function (it) {
+      var okFase = !activeFase || it.getAttribute('data-fase') === activeFase;
+      var okText = !q || it.getAttribute('data-search').indexOf(q) !== -1;
       var vis = okFase && okText;
-      r.style.display = vis ? '' : 'none';
-      if (vis) shown++;
+      it.style.display = vis ? '' : 'none';
+      if (vis) { shown++; }
     });
-    count.textContent = shown + ' de ' + rows.length + ' entradas';
+    count.textContent = shown + ' de ' + items.length + ' entradas';
     empty.hidden = shown !== 0;
   }
 
@@ -72,6 +82,38 @@ Busca por texto o filtra por fase. Se alimenta de
       apply();
     });
   });
+
+  items.forEach(function (it) {
+    var btn = it.querySelector('.arsenal-copy');
+    var code = it.querySelector('.arsenal-item__cmd code');
+    if (!btn || !code) { return; }
+    btn.addEventListener('click', function () {
+      var icon = btn.querySelector('i');
+      function done() {
+        btn.classList.add('copied');
+        icon.className = 'fas fa-check';
+        setTimeout(function () {
+          btn.classList.remove('copied');
+          icon.className = 'far fa-clipboard';
+        }, 1500);
+      }
+      var text = code.textContent;
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(done, function () {});
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'absolute';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) { /* sin portapapeles */ }
+        document.body.removeChild(ta);
+      }
+    });
+  });
+
   apply();
 })();
 </script>
