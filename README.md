@@ -228,14 +228,19 @@ editas ese archivo a mano, o usas el script:
 .\scripts\nuevo-comando.ps1 -Cmd "sudo -l" -Fase "Escalada de privilegios" -Desc "Listar permisos sudo del usuario" -Tags "linux,sudo,privesc"
 ```
 
-Con referencia a un writeup:
+Con referencia a la **sección exacta** de un writeup (dónde lo usaste):
 
 ```bash
-.\scripts\nuevo-comando.ps1 -Cmd "GetUserSPNs.py dominio/user:pass -request" -Fase "Credenciales" -Desc "Kerberoasting: pedir tickets de cuentas con SPN" -Tags "ad,kerberoasting" -Ref "HTB: Forest" -RefUrl "/posts/htb-forest/"
+.\scripts\nuevo-comando.ps1 -Cmd "GetUserSPNs.py dominio/user:pass -request" -Fase "Credenciales" -Desc "Kerberoasting: pedir tickets de cuentas con SPN" -Tags "ad,kerberoasting" -Ref "HTB: Forest" -RefUrl "/posts/htb-forest/#5-kerberoasting" -Seccion "Tarea 5 · Kerberoasting"
 ```
 
-- **`refs`** es una lista: un mismo comando puede enlazar a varios writeups. Déjalo en `[]`
-  si aún no lo has usado en ninguno publicado.
+- **`refs`** es una lista: un mismo comando puede enlazar a varios writeups, cada uno a su
+  sección. Déjalo en `[]` si aún no lo has usado en ninguno publicado.
+- **Enlazar a la sección exacta:** añade `#ancla` al final de la `url`. El ancla es el `id`
+  del encabezado de esa sección; para saberlo, abre el writeup y pasa el cursor por el título
+  (aparece un enlace `#…`) o cópialo del `id` del encabezado. `seccion` es solo la etiqueta
+  que se muestra (ej. `"Tarea 8 · Movimiento lateral"`).
+- Si el ancla lleva acentos, úsalo codificado (ej. `#6-archivo-abusado-v%C3%ADa-dpapi`).
 - Reutiliza los nombres de **fase** del comentario que hay al inicio de `arsenal.yml` para que
   los filtros no se multipliquen.
 - Si un comando lleva algo sensible (una IP real, una credencial), no lo subas: recuerda que el

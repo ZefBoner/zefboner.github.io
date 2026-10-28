@@ -31,7 +31,7 @@ Busca por texto o filtra por fase. Se alimenta de
       <td><code>{{ e.cmd | escape }}</code></td>
       <td><span class="arsenal-fase">{{ e.fase }}</span></td>
       <td>{{ e.desc }}{%- if e.tags and e.tags.size > 0 -%}<div class="arsenal-tags">{%- for t in e.tags -%}<span>#{{ t }}</span>{%- endfor -%}</div>{%- endif -%}</td>
-      <td>{%- if e.refs and e.refs.size > 0 -%}{%- for r in e.refs -%}<a href="{{ r.url | relative_url }}">{{ r.nombre }}</a>{%- unless forloop.last -%}<br>{%- endunless -%}{%- endfor -%}{%- else -%}<span class="arsenal-muted">—</span>{%- endif -%}</td>
+      <td>{%- if e.refs and e.refs.size > 0 -%}{%- for r in e.refs -%}<div class="arsenal-ref"><a href="{{ r.url }}">{{ r.nombre }}</a>{%- if r.seccion -%}<span class="arsenal-seccion">{{ r.seccion }}</span>{%- endif -%}</div>{%- endfor -%}{%- else -%}<span class="arsenal-muted">—</span>{%- endif -%}</td>
     </tr>
   {%- endfor -%}
   </tbody>

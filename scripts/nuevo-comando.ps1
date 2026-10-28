@@ -6,7 +6,7 @@
     .\scripts\nuevo-comando.ps1 -Cmd "sudo -l" -Fase "Escalada de privilegios" -Desc "Listar permisos sudo del usuario actual" -Tags "linux,sudo,privesc"
 
 .EXAMPLE
-    .\scripts\nuevo-comando.ps1 -Cmd "crackmapexec smb <IP> -u user -p pass" -Fase "Movimiento lateral" -Desc "Spray de credenciales por SMB" -Tags "ad,smb,cme" -Ref "HTB: Forest" -RefUrl "/posts/htb-forest/"
+    .\scripts\nuevo-comando.ps1 -Cmd "crackmapexec smb <IP> -u user -p pass" -Fase "Movimiento lateral" -Desc "Spray de credenciales por SMB" -Tags "ad,smb,cme" -Ref "HTB: Forest" -RefUrl "/posts/htb-forest/#3-acceso-inicial" -Seccion "Tarea 3 · Acceso inicial"
 
 .NOTES
     Fases sugeridas: Reconocimiento, Enumeración, Acceso inicial, Transferencia de archivos,
@@ -19,8 +19,9 @@ param(
     [Parameter(Mandatory = $true)] [string]$Fase,
     [Parameter(Mandatory = $true)] [string]$Desc,
     [string]$Tags = "",                # separadas por comas
-    [string]$Ref = "",                 # nombre del writeup (opcional)
-    [string]$RefUrl = ""               # url del writeup (opcional, p.ej. /posts/htb-foo/)
+    [string]$Ref = "",                 # nombre del lab/writeup (opcional)
+    [string]$RefUrl = "",              # url del writeup; añade #ancla para caer en la sección exacta
+    [string]$Seccion = ""              # etiqueta de la sección (ej. "Tarea 8 · Movimiento lateral")
 )
 
 $ErrorActionPreference = 'Stop'
@@ -47,6 +48,9 @@ if (-not [string]::IsNullOrWhiteSpace($Ref) -and -not [string]::IsNullOrWhiteSpa
     $block += "  refs:"
     $block += "    - nombre: $(Q $Ref)"
     $block += "      url: $(Q $RefUrl)"
+    if (-not [string]::IsNullOrWhiteSpace($Seccion)) {
+        $block += "      seccion: $(Q $Seccion)"
+    }
 } else {
     $block += "  refs: []"
 }
@@ -62,7 +66,7 @@ Write-Host ""
 Write-Host "  Comando añadido al arsenal:" -ForegroundColor Green
 Write-Host "    $Cmd"
 Write-Host "    fase: $Fase   tags: $Tags"
-if ($Ref) { Write-Host "    ref:  $Ref -> $RefUrl" }
+if ($Ref) { Write-Host "    ref:  $Ref -> $RefUrl $(if ($Seccion){"($Seccion)"})" }
 Write-Host ""
 Write-Host "  Previsualiza con  .\scripts\servir.ps1  o publica con  .\scripts\publicar.ps1" -ForegroundColor DarkGray
 Write-Host ""

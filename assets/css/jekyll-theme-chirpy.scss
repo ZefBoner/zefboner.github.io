@@ -454,6 +454,26 @@ pre,
   color: var(--text-muted-color);
 }
 
+.arsenal-ref {
+  margin-bottom: 0.5rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  a {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+}
+
+.arsenal-seccion {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.72rem;
+  color: var(--text-muted-color);
+}
+
 .arsenal-empty {
   margin-top: 1rem;
   color: var(--text-muted-color);

