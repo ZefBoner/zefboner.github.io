@@ -83,7 +83,9 @@ por fase. Se alimenta de
     });
   });
 
-  // Copia con el API moderno y, si el navegador lo bloquea, con execCommand.
+  /* Copia con el API moderno y, si el navegador lo bloquea, con execCommand.
+     Ojo: nada de comentarios con doble barra aqui; Chirpy minifica la pagina
+     en una sola linea y comentaria el resto del script. */
   function legacyCopy(text) {
     var ta = document.createElement('textarea');
     ta.value = text;
