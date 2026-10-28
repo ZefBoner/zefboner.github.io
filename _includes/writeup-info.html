@@ -26,8 +26,7 @@
 
 <div class="wu-card">
 {%- if info.logo -%}
-{%- capture logo_src -%}{%- include media-url.html src=info.logo subpath=page.media_subpath -%}{%- endcapture -%}
-<div class="wu-card__logo"><img src="{{ logo_src }}" alt="Logo de {{ info.name | default: page.title | xml_escape }}"></div>
+<div class="wu-card__logo"><img src="{{ info.logo }}" alt="Logo de {{ info.name | default: page.title | xml_escape }}"></div>
 {%- endif -%}
 <div class="wu-card__body">
 <dl class="wu-card__grid">
