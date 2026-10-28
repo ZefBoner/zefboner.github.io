@@ -83,6 +83,21 @@ por fase. Se alimenta de
     });
   });
 
+  // Copia con el API moderno y, si el navegador lo bloquea, con execCommand.
+  function legacyCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'absolute';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
   items.forEach(function (it) {
     var btn = it.querySelector('.arsenal-copy');
     var code = it.querySelector('.arsenal-item__cmd code');
@@ -99,17 +114,11 @@ por fase. Se alimenta de
       }
       var text = code.textContent;
       if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text).then(done, function () {});
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = text;
-        ta.setAttribute('readonly', '');
-        ta.style.position = 'absolute';
-        ta.style.left = '-9999px';
-        document.body.appendChild(ta);
-        ta.select();
-        try { document.execCommand('copy'); done(); } catch (e) { /* sin portapapeles */ }
-        document.body.removeChild(ta);
+        navigator.clipboard.writeText(text).then(done, function () {
+          if (legacyCopy(text)) { done(); }
+        });
+      } else if (legacyCopy(text)) {
+        done();
       }
     });
   });
