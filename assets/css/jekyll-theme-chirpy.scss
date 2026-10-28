@@ -320,6 +320,145 @@ pre,
   }
 }
 
+/* --- Arsenal (pagina de comandos) --- */
+
+.arsenal-search {
+  width: 100%;
+  margin: 1.25rem 0 1rem;
+  padding: 0.6rem 0.9rem;
+  font-family: var(--angx-mono);
+  font-size: 0.9rem;
+  color: var(--heading-color);
+  background: var(--card-bg);
+  border: 1px solid var(--main-border-color);
+  border-radius: 8px;
+  outline: none;
+
+  &:focus {
+    border-color: var(--angx-accent);
+    box-shadow: 0 0 0 2px rgb(var(--angx-accent-rgb) / 20%);
+  }
+
+  &::placeholder {
+    color: var(--text-muted-color);
+  }
+}
+
+.arsenal-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+
+  button {
+    padding: 0.28rem 0.7rem;
+    font-size: 0.78rem;
+    font-family: var(--angx-mono);
+    color: var(--text-muted-color);
+    background: var(--card-bg);
+    border: 1px solid var(--main-border-color);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      color: var(--heading-color);
+      border-color: var(--angx-accent);
+    }
+
+    &.active {
+      color: #0e1116;
+      background: var(--angx-accent);
+      border-color: var(--angx-accent);
+      font-weight: 600;
+    }
+  }
+}
+
+.arsenal-count {
+  font-size: 0.78rem;
+  color: var(--text-muted-color);
+  margin: 0 0 0.5rem;
+}
+
+.arsenal-wrap {
+  overflow-x: auto;
+}
+
+.arsenal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+
+  th {
+    text-align: left;
+    padding: 0.5rem 0.6rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted-color);
+    border-bottom: 1px solid var(--main-border-color);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 0.7rem 0.6rem;
+    border-bottom: 1px solid var(--main-border-color);
+    vertical-align: top;
+  }
+
+  tbody tr:hover {
+    background: rgb(var(--angx-accent-rgb) / 4%);
+  }
+
+  code {
+    display: inline-block;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    background: var(--inline-code-bg);
+    color: var(--heading-color);
+    padding: 0.15rem 0.4rem;
+    border-radius: 5px;
+    font-size: 0.82rem;
+  }
+
+  td:first-child {
+    min-width: 15rem;
+  }
+}
+
+.arsenal-fase {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 0.1rem 0.55rem;
+  font-size: 0.72rem;
+  font-family: var(--angx-mono);
+  color: var(--angx-accent);
+  background: rgb(var(--angx-accent-rgb) / 10%);
+  border-radius: 999px;
+}
+
+.arsenal-tags {
+  margin-top: 0.35rem;
+
+  span {
+    display: inline-block;
+    margin: 0.1rem 0.25rem 0 0;
+    font-size: 0.7rem;
+    font-family: var(--angx-mono);
+    color: var(--text-muted-color);
+  }
+}
+
+.arsenal-muted {
+  color: var(--text-muted-color);
+}
+
+.arsenal-empty {
+  margin-top: 1rem;
+  color: var(--text-muted-color);
+}
+
 /* --- Spoiler: <span class="spoiler">texto</span> ---
    Oculta una pista hasta pasar el cursor encima.
    ¡No sirve para flags! El texto sigue en el HTML. Las flags se censuran a mano. */

@@ -1,7 +1,7 @@
 ---
 title: whoami
 icon: fas fa-terminal
-order: 4
+order: 5
 ---
 
 ```console

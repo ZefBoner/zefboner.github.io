@@ -215,7 +215,33 @@ Hace `commit` + `push`. En 1-2 minutos el writeup está en línea. El avance del
 
 ---
 
-## 10. Personalización
+## 10. El Arsenal (base de comandos)
+
+La pestaña **Arsenal** es tu base de datos de comandos y técnicas: cada entrada tiene su
+comando, la **fase** (reconocimiento, escalada, persistencia…), una descripción y **en qué
+writeup la usaste** (con enlace). La página tiene buscador en vivo y filtros por fase.
+
+Se alimenta del archivo [`_data/arsenal.yml`](_data/arsenal.yml). Para añadir un comando, o
+editas ese archivo a mano, o usas el script:
+
+```bash
+.\scripts\nuevo-comando.ps1 -Cmd "sudo -l" -Fase "Escalada de privilegios" -Desc "Listar permisos sudo del usuario" -Tags "linux,sudo,privesc"
+```
+
+Con referencia a un writeup:
+
+```bash
+.\scripts\nuevo-comando.ps1 -Cmd "GetUserSPNs.py dominio/user:pass -request" -Fase "Credenciales" -Desc "Kerberoasting: pedir tickets de cuentas con SPN" -Tags "ad,kerberoasting" -Ref "HTB: Forest" -RefUrl "/posts/htb-forest/"
+```
+
+- **`refs`** es una lista: un mismo comando puede enlazar a varios writeups. Déjalo en `[]`
+  si aún no lo has usado en ninguno publicado.
+- Reutiliza los nombres de **fase** del comentario que hay al inicio de `arsenal.yml` para que
+  los filtros no se multipliquen.
+- Si un comando lleva algo sensible (una IP real, una credencial), no lo subas: recuerda que el
+  repo es público.
+
+## 11. Personalización
 
 - **Avatar:** reemplaza [`assets/img/avatar.svg`](assets/img/avatar.svg) por tu foto o logo
   (o cambia la ruta `avatar:` en [`_config.yml`](_config.yml)).
