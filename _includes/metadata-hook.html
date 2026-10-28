@@ -2,3 +2,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap">
+
+<!-- Reajusta el scroll al ancla tras cargar las imágenes (deep-links a secciones) -->
+<script>
+  (function () {
+    if (!location.hash) { return; }
+    function goToHash() {
+      try {
+        var el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+        if (el) { el.scrollIntoView(); }
+      } catch (e) {}
+    }
+    window.addEventListener('load', function () { setTimeout(goToHash, 60); });
+  })();
+</script>
